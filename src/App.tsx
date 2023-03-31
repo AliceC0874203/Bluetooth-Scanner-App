@@ -15,6 +15,7 @@ import {
 } from '@ionic/react';
 import { BLE } from '@ionic-native/ble';
 import React, { useState } from 'react';
+import { useRef } from "react";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/database';
 // import { firebaseConfig } from './';
@@ -65,16 +66,30 @@ const database = firebase.database();
 
 const App: React.FC = () => {
   const [scanning, setScanning] = useState(false);
-  const [newDevices, setNewDevices] =  useState<Device[]>([]);
+  const [newDevices, setNewDevices] = useState<Device[]>([]);
+
+  // Use a useRef to keep track of the device IDs
+  const deviceIds = useRef<Set<string>>(new Set());
 
   const startScan = () => {
     setScanning(true);
     setNewDevices([]);
+    deviceIds.current.clear(); // Clear device IDs before starting a new scan
+
     BLE.scan([], 5).subscribe(
       (device) => {
-        console.log(JSON.stringify(device));
-        setNewDevices((prevDevices) => [...prevDevices, device]);
-        database.ref('devices/').push(device.id);
+        // Use a type assertion to treat the device object as a Device
+        const typedDevice = device as Device;
+  
+        // Check if the device ID already exists in the deviceIds Set
+        const deviceExists = deviceIds.current.has(typedDevice.id);
+  
+        // Only add the device to the array if it doesn't already exist
+        if (!deviceExists) {
+          setNewDevices((prevDevices) => [...prevDevices, typedDevice]);
+          deviceIds.current.add(typedDevice.id); // Add the device ID to the deviceIds Set
+          database.ref('devices/').push(typedDevice.id);
+        }
       },
       (error) => {
         console.error(error);
@@ -107,14 +122,11 @@ const App: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonList>
-          Hi
           {newDevices.map((device, index) => {
-            console.log("Hi", device);
-            console.log("LoL", index);
             return (
               <IonItem key={index}>
                 <IonLabel>
-                  <h2>ID: {device.id}</h2>
+                  <h4>ID: {device.id}</h4>
                   <h3>Name: {device.name || 'Unknown'}</h3>
                   <p>RSSI: {device.rssi}</p>
                 </IonLabel>
