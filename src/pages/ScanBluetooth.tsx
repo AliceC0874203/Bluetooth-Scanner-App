@@ -19,24 +19,10 @@ import {
     IonCardContent,
 } from '@ionic/react';
 import { BLE } from '@ionic-native/ble';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/database';
 import './ScanBluetooth.css';
-
-// Assuming you have already initialized firebase in your App.tsx
-export const firebaseConfig = {
-    apiKey: "AIzaSyBs65rTCrW3dbRtiFPoNTNBSKNYSR6bSzk",
-    authDomain: "eigenintershiptest.firebaseapp.com",
-    projectId: "eigenintershiptest",
-    storageBucket: "eigenintershiptest.appspot.com",
-    messagingSenderId: "949736203523",
-    appId: "1:949736203523:web:675ac2113e3d99a9b6f536",
-    measurementId: "G-RKQ5PTBW6F"
-};
+import { database } from '../App';
 
 // Initialize the Firebase app and create a database reference
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
 
 interface Device {
     id: string;

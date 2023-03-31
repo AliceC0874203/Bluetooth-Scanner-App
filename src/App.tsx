@@ -27,8 +27,25 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import Register from './pages/Register';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/database';
 
 setupIonicReact();
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyBs65rTCrW3dbRtiFPoNTNBSKNYSR6bSzk",
+  authDomain: "eigenintershiptest.firebaseapp.com",
+  projectId: "eigenintershiptest",
+  storageBucket: "eigenintershiptest.appspot.com",
+  messagingSenderId: "949736203523",
+  appId: "1:949736203523:web:675ac2113e3d99a9b6f536",
+  measurementId: "G-RKQ5PTBW6F"
+};
+
+firebase.initializeApp(firebaseConfig);
+export const auth = firebase.auth();
+export const database = firebase.database();
 
 const App: React.FC = () => {
   return (
