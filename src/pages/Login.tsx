@@ -45,12 +45,14 @@ const Login: React.FC = () => {
 
     const signIn = async () => {
         try {
+            console.log(email, password);
             await auth.signInWithEmailAndPassword(email, password);
             history.replace('/scan-bluetooth');
             setToastMessage('Login successful!');
         } catch (error) {
             const firebaseError = error as firebase.FirebaseError;
-            setToastMessage('Error registering: ' + firebaseError.message);
+            console.log(firebaseError);
+            setToastMessage('Error login: ' + firebaseError.message);
         }
         finally {
             setShowToast(true);

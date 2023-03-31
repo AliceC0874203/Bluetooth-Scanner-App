@@ -46,6 +46,7 @@ const ScanBluetooth: React.FC = () => {
 
     // Use a useRef to keep track of the device IDs
     const deviceIds = useRef<Set<string>>(new Set());
+    BLE.enable();
 
     // ... (keep your existing code for startScan and stopScan functions)
     const startScan = () => {
@@ -54,6 +55,7 @@ const ScanBluetooth: React.FC = () => {
         setNewDevices([]);
         deviceIds.current.clear(); // Clear device IDs before starting a new scan
 
+        
         BLE.scan([], 5).subscribe(
             (device) => {
                 // Use a type assertion to treat the device object as a Device
@@ -116,10 +118,9 @@ const ScanBluetooth: React.FC = () => {
                                     {newDevices.map((device, index) => {
                                         return (
                                             <IonItem key={index}>
-                                                <IonLabel>
+                                                <IonLabel text-wrap>
                                                     <h4>ID: {device.id}</h4>
                                                     <h3>Name: {device.name || 'Unknown'}</h3>
-                                                    <p>RSSI: {device.rssi}</p>
                                                 </IonLabel>
                                             </IonItem>
                                         );

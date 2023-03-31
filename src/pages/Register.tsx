@@ -46,6 +46,7 @@ const Register: React.FC = () => {
             setToastMessage('Registration successful!');
         } catch (error) {
             const firebaseError = error as firebase.FirebaseError;
+            console.log(firebaseError);
             setToastMessage('Error registering: ' + firebaseError.message);
         } finally {
             setShowToast(true);
@@ -106,7 +107,10 @@ const Register: React.FC = () => {
                                 <IonText color="primary">
                                     <p className="footer-text">
                                         Already have account? {' '}
-                                        <Link to="/Login">
+                                        <Link to="" onClick={(e) => {
+                                            e.preventDefault();
+                                            history.goBack();
+                                        }}>
                                             <span>Sign In</span>
                                         </Link>
                                     </p>
