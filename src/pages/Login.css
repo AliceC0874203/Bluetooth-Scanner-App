@@ -1,0 +1,63 @@
+:root {
+    --primary-blue: #5B62FF;
+    --secondary-blue: #7278F2;
+    --primary-red: #FF4D4D;
+  }
+  
+  .header-text {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 50px;
+    margin-top: 80px;
+    color: var(--primary-blue);
+  }
+  
+  ion-input {
+    --padding-start: 0;
+    --padding-end: 0;
+    --background: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  ion-label {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--primary-blue);
+  }
+  
+  .forgot-password {
+    font-size: 14px;
+    text-align: right;
+    margin-bottom: 40px;
+    cursor: pointer;
+    color: var(--primary-blue);
+  }
+  
+  ion-button {
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    --padding-start: 32px;
+    --padding-end: 32px;
+    --background: var(--secondary-blue);
+    --color: #fff;
+  }
+  
+  .footer-text {
+    font-size: 14px;
+    text-align: center;
+    margin-top: 20px;
+    color: var(--primary-blue);
+  }
+  
+  .footer-text span {
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  

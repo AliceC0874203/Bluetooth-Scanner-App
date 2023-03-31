@@ -11,6 +11,10 @@ import {
   IonHeader,
   IonToolbar,
   IonTitle,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonText,
   setupIonicReact
 } from '@ionic/react';
 import { BLE } from '@ionic-native/ble';
@@ -19,7 +23,7 @@ import { useRef } from "react";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/database';
 // import { firebaseConfig } from './';
-// import Login from './pages/Login';
+import Login from './pages/Login';
 // import Register from './pages/Register';
 
 /* Core CSS required for Ionic components to work properly */
@@ -40,7 +44,6 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-
 
 setupIonicReact();
 
@@ -72,6 +75,7 @@ const App: React.FC = () => {
   const deviceIds = useRef<Set<string>>(new Set());
 
   const startScan = () => {
+    database.ref('devices/').remove();
     setScanning(true);
     setNewDevices([]);
     deviceIds.current.clear(); // Clear device IDs before starting a new scan
@@ -103,37 +107,87 @@ const App: React.FC = () => {
     BLE.stopScan();
   };
 
+  // return (
+  //   <IonApp>
+  //     <IonContent className="ion-padding">
+  //       {/* <Login />
+  //       <Register /> */}
+  //       <IonButton
+  //         onClick={startScan}
+  //         disabled={scanning}
+  //         color={scanning ? 'medium' : 'primary'}
+  //         expand="block"
+  //       >
+  //         {scanning ? 'Scanning...' : 'Start Scan'}
+  //       </IonButton>
+  //       <IonHeader>
+  //         <IonToolbar>
+  //           <IonTitle>Discovered Devices</IonTitle>
+  //         </IonToolbar>
+  //       </IonHeader>
+  //       <IonList>
+  //         {newDevices.map((device, index) => {
+  //           return (
+  //             <IonItem key={index}>
+  //               <IonLabel>
+  //                 <h4>ID: {device.id}</h4>
+  //                 <h3>Name: {device.name || 'Unknown'}</h3>
+  //                 <p>RSSI: {device.rssi}</p>
+  //               </IonLabel>
+  //             </IonItem>
+  //           );
+  //         })}
+  //       </IonList>
+  //     </IonContent>
+  //   </IonApp>
+  // );
+
   return (
     <IonApp>
-      <IonContent className="ion-padding">
-        {/* <Login />
-        <Register /> */}
-        <IonButton
-          onClick={startScan}
-          disabled={scanning}
-          color={scanning ? 'medium' : 'primary'}
-          expand="block"
-        >
-          {scanning ? 'Scanning...' : 'Start Scan'}
-        </IonButton>
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>Discovered Devices</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonList>
-          {newDevices.map((device, index) => {
-            return (
-              <IonItem key={index}>
-                <IonLabel>
-                  <h4>ID: {device.id}</h4>
-                  <h3>Name: {device.name || 'Unknown'}</h3>
-                  <p>RSSI: {device.rssi}</p>
-                </IonLabel>
-              </IonItem>
-            );
-          })}
-        </IonList>
+      <IonContent fullscreen className="ion-padding app-content" >
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              <IonText color="primary">
+                <h1 className="header-text">Bluetooth Scanner</h1>
+              </IonText>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonButton
+                onClick={startScan}
+                disabled={scanning}
+                color={'primary'}
+                expand="block"
+              >
+                {scanning ? 'Scanning...' : 'Start Scan'}
+              </IonButton>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonHeader>
+                <IonToolbar>
+                  <IonTitle>Discovered Devices</IonTitle>
+                </IonToolbar>
+              </IonHeader>
+              <IonList>
+                {newDevices.map((device, index) => {
+                  return (
+                    <IonItem key={index}>
+                      <IonLabel>
+                        <h4>ID: {device.id}</h4>
+                        <h3>Name: {device.name || 'Unknown'}</h3>
+                        <p>RSSI: {device.rssi}</p>
+                      </IonLabel>
+                    </IonItem>
+                  );
+                })}
+              </IonList>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonApp>
   );

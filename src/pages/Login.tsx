@@ -50,3 +50,61 @@
 // };
 
 // export default Login;
+
+import React from 'react';
+import {
+  IonContent,
+  IonPage,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonInput,
+  IonButton,
+  IonText,
+  IonLabel,
+} from '@ionic/react';
+import './Login.css';
+
+const Login: React.FC = () => {
+  return (
+    <IonPage>
+      <IonContent fullscreen className="ion-padding">
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              <IonText color="primary">
+                <h1 className="header-text">Sign In</h1>
+              </IonText>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonLabel color="primary" position="floating">Email</IonLabel>
+              <IonInput type="email" required></IonInput>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonLabel color="primary" position="floating">Password</IonLabel>
+              <IonInput type="password" required></IonInput>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonButton expand="block" color="primary">Sign In</IonButton>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonText color="primary">
+                <p className="footer-text">Don't have an account? <span>Sign up</span></p>
+              </IonText>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </IonContent>
+    </IonPage>
+  );
+};
+
+export default Login;
