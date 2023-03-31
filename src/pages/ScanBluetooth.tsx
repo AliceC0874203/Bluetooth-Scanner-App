@@ -13,6 +13,10 @@ import {
     IonCol,
     IonText,
     IonPage,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
 } from '@ionic/react';
 import { BLE } from '@ionic-native/ble';
 import firebase from 'firebase/compat/app';
@@ -48,14 +52,23 @@ const ScanBluetooth: React.FC = () => {
     const deviceIds = useRef<Set<string>>(new Set());
     BLE.enable();
 
-    // ... (keep your existing code for startScan and stopScan functions)
+    const toggleScan = () => {
+        if (scanning) {
+            // Stop scanning
+
+            stopScan();
+        } else {
+            // Start scanning
+            startScan();
+        }
+    };
+
     const startScan = () => {
         database.ref('devices/').remove();
         setScanning(true);
         setNewDevices([]);
         deviceIds.current.clear(); // Clear device IDs before starting a new scan
 
-        
         BLE.scan([], 5).subscribe(
             (device) => {
                 // Use a type assertion to treat the device object as a Device
@@ -98,9 +111,8 @@ const ScanBluetooth: React.FC = () => {
                         <IonRow>
                             <IonCol>
                                 <IonButton
-                                    onClick={startScan}
-                                    disabled={scanning}
-                                    color={'primary'}
+                                    onClick={toggleScan}
+                                    color={scanning ? 'medium' : 'primary'}
                                     expand="block"
                                 >
                                     {scanning ? 'Scanning...' : 'Start Scan'}
@@ -118,10 +130,15 @@ const ScanBluetooth: React.FC = () => {
                                     {newDevices.map((device, index) => {
                                         return (
                                             <IonItem key={index}>
-                                                <IonLabel text-wrap>
-                                                    <h4>ID: {device.id}</h4>
-                                                    <h3>Name: {device.name || 'Unknown'}</h3>
-                                                </IonLabel>
+                                                <IonCard>
+                                                    <IonCardHeader>
+                                                        <IonCardTitle>Name: {device.name || 'Unknown'}</IonCardTitle>
+                                                    </IonCardHeader>
+
+                                                    <IonCardContent>
+                                                        ID: {device.id}
+                                                    </IonCardContent>
+                                                </IonCard>
                                             </IonItem>
                                         );
                                     })}
