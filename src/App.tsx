@@ -1,5 +1,5 @@
 import { Redirect, Route } from 'react-router-dom';
-import {IonRouterOutlet } from '@ionic/react';
+import { IonRouterOutlet } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import {
   IonApp,
@@ -53,21 +53,27 @@ export const firebaseConfig = {
   measurementId: "G-RKQ5PTBW6F"
 };
 
+interface Device {
+  id: string;
+  name?: string;
+  rssi: number;
+}
+
 // Initialize the Firebase app and create a database reference
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
 const App: React.FC = () => {
   const [scanning, setScanning] = useState(false);
-  const [devices] = useState<Array<any>>([]);
+  const [newDevices, setNewDevices] =  useState<Device[]>([]);
 
   const startScan = () => {
     setScanning(true);
-    let newDevices: Array<any> = [];
+    setNewDevices([]);
     BLE.scan([], 5).subscribe(
       (device) => {
         console.log(JSON.stringify(device));
-        newDevices.push(device);
+        setNewDevices((prevDevices) => [...prevDevices, device]);
         database.ref('devices/').push(device.id);
       },
       (error) => {
@@ -77,7 +83,7 @@ const App: React.FC = () => {
     setTimeout(() => stopScan(), 5000);
   };
 
-  const stopScan = () => { 
+  const stopScan = () => {
     setScanning(false);
     BLE.stopScan();
   };
@@ -101,15 +107,20 @@ const App: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonList>
-          {devices.map((device, index) => (
-            <IonItem key={index}>
-              <IonLabel>
-                <h2>ID: {device.id}</h2>
-                <h3>Name: {device.name || 'Unknown'}</h3>
-                <p>RSSI: {device.rssi}</p>
-              </IonLabel>
-            </IonItem>
-          ))}
+          Hi
+          {newDevices.map((device, index) => {
+            console.log("Hi", device);
+            console.log("LoL", index);
+            return (
+              <IonItem key={index}>
+                <IonLabel>
+                  <h2>ID: {device.id}</h2>
+                  <h3>Name: {device.name || 'Unknown'}</h3>
+                  <p>RSSI: {device.rssi}</p>
+                </IonLabel>
+              </IonItem>
+            );
+          })}
         </IonList>
       </IonContent>
     </IonApp>
